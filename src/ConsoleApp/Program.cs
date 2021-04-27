@@ -13,7 +13,7 @@ namespace ConsoleApp
         /// </summary>
         /// <param name="size">Tamanho em bits do numero a ser retornado, deve ser maior do que 3, ou retornará 0 ou 1 padrão = 1024, recomendado maior que 64</param>
         /// <returns>Inteiro positivo impar</returns>
-        private static BigInteger GetRandomBigInteger(int size = 1024)
+        private static BigInteger GetRandomBigInteger(int size)
         {
             if (size < 1) return 0;
             byte[] randBit = new byte[size];
@@ -149,7 +149,7 @@ namespace ConsoleApp
                     // This may raise an exception in Mono 2.10.8 and earlier.
                     // http://bugzilla.xamarin.com/show_bug.cgi?id=2761
                     //rng.GetBytes(bytes);
-                    a = GetRandomBigInteger();
+                    a = GetRandomBigInteger(source.ToByteArray().Length);
                 }
                 while (a < 2 || a >= source - 2);
 
@@ -174,19 +174,35 @@ namespace ConsoleApp
         }
 
 
+        /// <summary>
+        /// Returna um número primo para ser usado como chave de criptografia.
+        /// </summary>
+        /// <param name="bitSize">tamanho da chave em bit, padrão 1024</param>
+        /// <returns>Retorna um número primo para ser usado como chave de criptográfia</returns>
+        private static BigInteger GetKey(int bitSize = 1024)
+        {
+            var size = bitSize / 8;
+            BigInteger key;
+            do
+            {
+                key = GetRandomBigInteger(size);
+            } while (IsProbablePrime(key));
+            return key;
+        }
 
         static void Main(string[] args)
         {
 
-            Console.WriteLine(GetRandomBigInteger());
-            for (int i = 1; i < 100; i++)
-            {
-                var a = GetRandomBigInteger();
-                if (IsProbablePrime(a))
-                {
-                    Console.WriteLine($"primo = {i}");
-                }
-            }
+            var p = GetKey();
+            var q = GetKey();
+            var e = GetKey(32);
+            Console.WriteLine($"p = {p}, tamanho = {p.ToByteArray().Length}");
+            Console.WriteLine($"q = {q}, tamanho = {q.ToByteArray().Length}");
+            Console.WriteLine($"e = {e}, tamanho = {e.ToByteArray().Length}");
+            var n = p * q;
+            var phi = (p - 1) * (q - 1);
+            Console.WriteLine($"n = {n}, tamanho = {n.ToByteArray().Length}");
+            Console.WriteLine($"phi = {phi}, tamanho = {phi.ToByteArray().Length}");
 
         }
     }
