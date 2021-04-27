@@ -1,0 +1,16 @@
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\bin\Debug\net5.0\ConsoleApp.exe
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\bin\Debug\net5.0\ConsoleApp.deps.json
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\bin\Debug\net5.0\ConsoleApp.runtimeconfig.json
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\bin\Debug\net5.0\ConsoleApp.runtimeconfig.dev.json
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\bin\Debug\net5.0\ConsoleApp.dll
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\bin\Debug\net5.0\ref\ConsoleApp.dll
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\bin\Debug\net5.0\ConsoleApp.pdb
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\obj\Debug\net5.0\ConsoleApp.GeneratedMSBuildEditorConfig.editorconfig
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\obj\Debug\net5.0\ConsoleApp.AssemblyInfoInputs.cache
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\obj\Debug\net5.0\ConsoleApp.AssemblyInfo.cs
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\obj\Debug\net5.0\ConsoleApp.csproj.CoreCompileInputs.cache
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\obj\Debug\net5.0\ConsoleApp.dll
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\obj\Debug\net5.0\ref\ConsoleApp.dll
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\obj\Debug\net5.0\ConsoleApp.pdb
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\obj\Debug\net5.0\ConsoleApp.genruntimeconfig.cache
+D:\Repos\UnB\ComputationalSecurity\src\ConsoleApp\obj\Debug\net5.0\ConsoleApp.csprojAssemblyReference.cache
