@@ -17,13 +17,9 @@ namespace ConsoleApp
         {
             if (size < 1) return 0;
             byte[] randBit = new byte[size];
-            //new Random().NextBytes(randBit);
-            //RandomNumberGenerator rng = RandomNumberGenerator.Create();
-            //rng.GetBytes(randBit);
             RandomNumberGenerator.Create().GetBytes(randBit);
-            randBit[--size] = 0; // valor positivo
             randBit[0] = 1; // valor impar
-            return new BigInteger(randBit);
+            return BigInteger.Abs(new BigInteger(randBit));
         }
 
         /// <summary>
@@ -138,8 +134,6 @@ namespace ConsoleApp
             // There is no built-in method for generating random BigInteger values.
             // Instead, random BigIntegers are constructed from randomly generated
             // byte arrays of the same length as the source.
-            //RandomNumberGenerator rng = RandomNumberGenerator.Create();
-            //byte[] bytes = new byte[source.ToByteArray().LongLength];
             BigInteger a;
 
             for (int i = 0; i < certainty; i++)
@@ -148,7 +142,6 @@ namespace ConsoleApp
                 {
                     // This may raise an exception in Mono 2.10.8 and earlier.
                     // http://bugzilla.xamarin.com/show_bug.cgi?id=2761
-                    //rng.GetBytes(bytes);
                     a = GetRandomBigInteger(source.ToByteArray().Length);
                 }
                 while (a < 2 || a >= source - 2);
@@ -179,9 +172,8 @@ namespace ConsoleApp
         /// </summary>
         /// <param name="bitSize">tamanho da chave em bit, padrão 1024</param>
         /// <returns>Retorna um número primo para ser usado como chave de criptográfia</returns>
-        private static BigInteger GetKey(int bitSize = 1024)
+        private static BigInteger GetKey(int size = 1024)
         {
-            var size = bitSize / 8;
             BigInteger key;
             do
             {
@@ -190,19 +182,21 @@ namespace ConsoleApp
             return key;
         }
 
-        static void Main(string[] args)
+        static void Main()
         {
 
             var p = GetKey();
             var q = GetKey();
             var e = GetKey(32);
-            Console.WriteLine($"p = {p}, tamanho = {p.ToByteArray().Length}");
-            Console.WriteLine($"q = {q}, tamanho = {q.ToByteArray().Length}");
-            Console.WriteLine($"e = {e}, tamanho = {e.ToByteArray().Length}");
+            Console.WriteLine($"p = {p}, tamanho = {p.ToByteArray().Length * 8}");
+            Console.WriteLine($"q = {q}, tamanho = {q.ToByteArray().Length * 8}");
+            Console.WriteLine($"e = {e}, tamanho = {e.ToByteArray().Length * 8}");
             var n = p * q;
             var phi = (p - 1) * (q - 1);
-            Console.WriteLine($"n = {n}, tamanho = {n.ToByteArray().Length}");
-            Console.WriteLine($"phi = {phi}, tamanho = {phi.ToByteArray().Length}");
+            Console.WriteLine($"n = {n}, tamanho = {n.ToByteArray().Length * 8}");
+            Console.WriteLine($"phi = {phi}, tamanho = {phi.ToByteArray().Length * 8}");
+
+            var key = (n, e);
 
         }
     }
