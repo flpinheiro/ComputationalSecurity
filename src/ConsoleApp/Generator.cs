@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 
 namespace ConsoleApp
 {
-    public static class RSAFuncitions
+    public static class Generator
     {
         /// <summary>
         /// Describe the size of the Integer used * 8

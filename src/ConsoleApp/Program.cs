@@ -6,7 +6,7 @@ namespace ConsoleApp
     {
         static void Main()
         {
-            var rsa = RSAFuncitions.GenRSA();
+            var rsa = Generator.GenRSA();
             Console.WriteLine(rsa);
         }
     }
