@@ -8,6 +8,9 @@ namespace ConsoleApp
 {
     public static class Checker
     {
-        public static void Vrfy() { }
+        public static bool Vrfy(PublicKey pk, string mensage, string sigma) 
+        {
+            return true;
+        }
     }
 }
