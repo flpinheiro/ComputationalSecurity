@@ -245,10 +245,10 @@ namespace ConsoleApp
             var e = GetE();
             var d = ModInverse(e, phi);
 
-            var sk = new PublicKey(n, e);
-            var pk = new PrivateKey(n, d);
+            var publicKey = new PublicKey(n, e);
+            var privateKey = new PrivateKey(n, d);
 
-            var rsa = new RSA(pk, sk, p, q);
+            var rsa = new RSA(privateKey, publicKey);
 
             return rsa;
         }
