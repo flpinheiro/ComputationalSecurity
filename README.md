@@ -3,6 +3,11 @@
     Prof. João Gondim
     Trabalho de Implementação
     Gerador/Verificador de Assinaturas
+    
+## Integrantes 
+
+    Amanda Augusto da Silva - 180012053
+    Felipe Luís Pinheiro - 180052667
 
 Como atividade de implementação, deve-se implementar um gerador e verificador de assinaturas RSA em arquivos. Assim, deve-se implementar um programa com as seguintes funcionalidades:
 
