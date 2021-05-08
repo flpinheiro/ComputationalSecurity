@@ -1,181 +1,180 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Numerics;
-using System.Security.Cryptography;
 
 namespace ConsoleApp
 {
     public static class Generator
     {
-        /// <summary>
-        /// Describe the size of the Integer used * 8
-        /// if {
-        ///  _size = 4 => 32 bits;
-        ///  _size = 8 => 64 bits;
-        ///  _size = 128 => 1024 bits;
-        ///  _size = 1024 => 8192  bits;
-        /// }
-        /// </summary>
-        private const int _size = 1024;
+        private const int _size = 1 << 8;
 
         /// <summary>
         /// Returna um número inteiro positivo impar. 
         /// </summary>
         /// <param name="size">Tamanho em bits do numero a ser retornado, deve ser maior do que 3, ou retornará 0 ou 1 padrão = 1024, recomendado maior que 64</param>
         /// <returns>Inteiro positivo impar</returns>
-        private static BigInteger GetRandomBigInteger(int size)
+        private static BigInteger GenerateRandomBigInteger(int size)
         {
-            if (size < 1) return 0;
-            byte[] randBit = new byte[size];
-            RandomNumberGenerator.Create().GetBytes(randBit);
-            randBit[0] = 1; // valor impar
-            return BigInteger.Abs(new BigInteger(randBit));
+            byte[] bytes = new byte[size];
+            (new Random()).NextBytes(bytes);
+            bytes[bytes.Length - 1] &= 0x7F; // force sign bit to positive
+            return BigInteger.Abs(new BigInteger(bytes)); //force positive
         }
 
         /// <summary>
-        /// verfica se o número é primo
+        ///  Generate a random bigInteger ∈ [min,max]
+        /// <para>see https://github.com/mikolajtr/dotnetprime/blob/master/MillerRabin/Helpers/PrimeGeneratorHelpers.cs#L8 </para>
         /// </summary>
-        /// <param name="number">numero a ser verifica se é primo</param>
-        /// <returns>true se o número for primo e false se não for.</returns>
-        private static bool IsPrime(BigInteger number)
+        /// <param name="min">min value</param>
+        /// <param name="max">max value</param>
+        /// <returns>A random bigInteger</returns>
+        public static BigInteger GenerateRandomBigInteger(BigInteger min, BigInteger max)
         {
-            //verfica a lista dos primeiro primos conhecidos.
-            List<BigInteger> primeList = new()
-            {
-                2,
-                3,
-                5,
-                7,
-                11,
-                13,
-                17,
-                19,
-                23,
-                29,
-                31,
-                37,
-                41,
-                43,
-                47,
-                53,
-                59,
-                61,
-                67,
-                71,
-                73,
-                79,
-                83,
-                89,
-                97,
-                101,
-                103,
-                107,
-                109,
-                113,
-                127,
-                131,
-                137,
-                139,
-                149,
-                151,
-                157,
-                163,
-                167,
-                173,
-                179,
-                181,
-                191,
-                193,
-                197,
-                199,
-                211,
-                223,
-                227,
-                229,
-                233,
-                239,
-                241,
-                251,
-                257,
-                263,
-                269,
-                271,
-                277,
-                281,
-                283,
-                293,
-                307,
-                311,
-                313,
-                317,
-                331,
-                337,
-                347,
-                349
-            };
-            if (primeList.Any(p => number % p == 0 && p != number)) return false;
-            return true;
+            byte[] bytes = max.ToByteArray();
+            new Random().NextBytes(bytes);
+            bytes[bytes.Length - 1] &= 0x7F; // force sign bit to positive
+            BigInteger value = new BigInteger(bytes);
+            BigInteger result = (value % (max - min + 1)) + min;
+            return result;
         }
 
         /// <summary>
-        /// Miller-Rabin primality test as an extension method on the BigInteger type.
+        /// An implementation of the miller-rabin probabilistic primality test.
         /// </summary>
-        /// <param name="source">numero a ser verificado se é primo</param>
-        /// <param name="certainty"></param>
-        /// <returns>retorna true se o número é provavelmente primo e false se ele ñão é primo.</returns>
-        public static bool IsProbablePrime(BigInteger source, int certainty = 20)
+        /// <param name="n">input number</param>
+        /// <param name="reps">loop count,default 23</param>
+        /// <returns>
+        /// <para>0,n is not prime.</para>
+        /// <para>1,n is 'probably' prime.</para>
+        /// </returns>
+        private static int MillerRabin(BigInteger n, int reps)
         {
-            if (source == 2 || source == 3)
-                return true;
-            if (source < 2 || source % 2 == 0)
-                return false;
-            if (IsPrime(source))
-                return true;
+            BigInteger k, q, x, y;
+            BigInteger nm1 = n - 1;
 
-            BigInteger d = source - 1;
-            int s = 0;
+            /// Perform a Fermat test. 210 = 2*3*5*7, magic ???
+            y = BigInteger.ModPow(210, nm1, n);
+            if (y != 1) return 0; /// n is not prime.
 
-            while (d % 2 == 0)
+            /// Find q and k, where q is odd and n - 1 = 2^k * q.
+            for (k = 0, q = nm1; q.IsEven; k++, q >>= 1) ;
+
+            int is_prime = 1;
+            for (int r = 0; (r < reps) && (is_prime > 0); r++)
             {
-                d /= 2;
-                s += 1;
+                x = GenerateRandomBigInteger(1, nm1);
+                is_prime = MillerRabinInner(n, x, q, k);
             }
+            return is_prime;
+        }
 
-            // There is no built-in method for generating random BigInteger values.
-            // Instead, random BigIntegers are constructed from randomly generated
-            // byte arrays of the same length as the source.
-            BigInteger a;
+        private static int MillerRabinInner(BigInteger n, BigInteger x, BigInteger q, BigInteger k)
+        {
+            BigInteger nm1 = n - 1;
 
-            for (int i = 0; i < certainty; i++)
+            BigInteger y = BigInteger.ModPow(x, q, n);
+
+            if (y == 1 || y == nm1)
+                return 1;
+
+            for (BigInteger i = 1; i < k; i++)
             {
-                do
-                {
-                    // This may raise an exception in Mono 2.10.8 and earlier.
-                    // http://bugzilla.xamarin.com/show_bug.cgi?id=2761
-                    a = GetRandomBigInteger(source.ToByteArray().Length);
-                }
-                while (a < 2 || a >= source - 2);
+                y = BigInteger.ModPow(y, 2, n);
+                if (y == nm1)
+                    return 1;
+                if (y == 1)
+                    return 0;
+            }
+            return 0;
+        }
 
-                BigInteger x = BigInteger.ModPow(a, d, source);
-                if (x == 1 || x == source - 1)
-                    continue;
+        /// <summary>
+        /// Primality test
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="reps"> Miller-Rabin loop,25 passes are reasonable.</param>
+        /// <param name="accuracy">accuracy</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"/>
+        private static bool IsPrime(this BigInteger n, int reps)
+        {
 
-                for (int r = 1; r < s; r++)
-                {
-                    x = BigInteger.ModPow(x, 2, source);
-                    if (x == 1)
-                        return false;
-                    if (x == source - 1)
-                        break;
-                }
-
-                if (x != source - 1)
+            switch (IsPrimeInner(n, reps))
+            {
+                case 0: /// number is not prime.
                     return false;
+                case 1: /// number is 'probably' prime. probability is accuracy
+                    return true;
+                case 2: /// number is surely prime.
+                    return true;
+                default:
+                    break;
             }
-
-            return true;
+            return false;
         }
 
+        /// <summary>
+        /// Primality test
+        /// </summary>
+        /// <param name="n">data</param>
+        /// <param name="reps">Miller-Rabin loop,default 23</param>
+        /// <returns>
+        /// <para>0,n is not prime.</para>
+        /// <para>1,n is 'probably' prime.</para>
+        /// <para>2,n is surely prime.</para>
+        /// </returns>
+        /// <exception cref="ArgumentException"/>
+        private static int IsPrimeInner(this BigInteger n, int reps = 23)
+        {
+
+            /// Handle small and negative number
+            if (n < 0)
+                throw new ArgumentException("please input a positive integer!");
+            if (n < 1000000UL)
+                return IsPrimeUInt64((UInt64)n) ? 2 : 0;
+
+            /// If number is now even, it is not a prime. 
+            if ((n & 1) == 0)
+                return 0;
+
+            if (n.IsEven)
+                return 0;
+
+            /// Check if n has small factors.
+            if (n % 3 == 0 || n % 5 == 0 || n % 7 == 0
+                || n % 11 == 0 || n % 13 == 0 || n % 17 == 0
+                || n % 19 == 0 || n % 23 == 0 || n % 29 == 0
+                || n % 31 == 0 || n % 37 == 0 || n % 41 == 0
+                || n % 43 == 0 || n % 47 == 0 || n % 53 == 0)
+            {
+                return 0;
+            }
+
+            /// Perform a number of Miller-Rabin tests.
+            return MillerRabin(n, reps);
+        }
+
+        /// <summary>
+        /// Primality test for number ∈[0, 1000000]
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        private static bool IsPrimeUInt64(UInt64 n)
+        {
+            UInt64 q, r, d;
+
+            /// filter negative, even and 0,1,2
+            if (n < 3 || (n & 1) == 0)
+                return n == 2;
+
+            for (d = 3, r = 1; r != 0; d += 2)
+            {
+                q = n / d;
+                r = n - q * d;
+                if (q < d)
+                    return true;
+            }
+            return false;
+        }
 
         /// <summary>
         /// Returna um número primo para ser usado como chave de criptografia.
@@ -187,8 +186,9 @@ namespace ConsoleApp
             BigInteger key;
             do
             {
-                key = GetRandomBigInteger(size);
-            } while (IsProbablePrime(key));
+                key = GenerateRandomBigInteger(size);
+            } while (!key.IsPrime(25));
+
             return key;
         }
 
@@ -198,6 +198,7 @@ namespace ConsoleApp
         /// <param name="e"></param>
         /// <param name="phi"></param>
         /// <returns></returns>
+        // https://www.geeksforgeeks.org/multiplicative-inverse-under-modulo-m/
         private static BigInteger ModInverse(BigInteger e, BigInteger phi)
         {
             if (phi == 1) return 0;
@@ -236,14 +237,16 @@ namespace ConsoleApp
         /// <returns></returns>
         public static RSA GenRSA(int size = _size)
         {
-            var p = GetKey(size);
-            var q = GetKey(size);
+            BigInteger p, q, n, phi, e, d;
 
-            var n = p * q;
-            var phi = (p - 1) * (q - 1);
+            p = GetKey(size);
+            q = GetKey(size);
 
-            var e = GetE();
-            var d = ModInverse(e, phi);
+            n = p * q;
+            phi = (p - 1) * (q - 1);
+
+            e = GetE();
+            d = ModInverse(e, phi);
 
             var publicKey = new PublicKey(n, e);
             var privateKey = new PrivateKey(n, d);

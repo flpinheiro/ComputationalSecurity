@@ -8,20 +8,20 @@ namespace ConsoleApp
         static void Main()
         {
             var rsa = Generator.GenRSA();
+            Console.WriteLine(rsa);
 
-            var sign = Signer.Sign(rsa.PrivateKey, "bela noite de verão");
-
-            var test = Checker.Vrfy(rsa.PublicKey, sign);
-            Console.WriteLine(test);
-
-            var big = new BigInteger(12345678901234567890);
-            rsa = Generator.GenRSA(big.ToByteArray().Length);
-
-            Console.WriteLine(big);
-            var sigma = BigInteger.ModPow(big, rsa.PrivateKey.D, rsa.PrivateKey.N);
+            var sigma = BigInteger.ModPow(158,rsa.PrivateKey.D, rsa.PrivateKey.N);
             Console.WriteLine(sigma);
-            var output = BigInteger.ModPow(sigma, rsa.PublicKey.E, rsa.PublicKey.N);
-            Console.WriteLine(output);
+            var m = BigInteger.ModPow(sigma, rsa.PublicKey.E, rsa.PrivateKey.N);
+            Console.WriteLine(m);
+
+
+            var hashRSA = Signer.Sign(rsa.PrivateKey, "Bela noite de verão");
+
+            Console.WriteLine(hashRSA);
+
+            var result = Checker.Vrfy(rsa.PublicKey,hashRSA);
+            Console.WriteLine(result);
         }
     }
 
