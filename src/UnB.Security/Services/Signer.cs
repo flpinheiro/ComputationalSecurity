@@ -1,8 +1,9 @@
 ﻿using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
+using UnB.Security.Domain;
 
-namespace ConsoleApp
+namespace UnB.Security.Services
 {
     public static class Signer
     {

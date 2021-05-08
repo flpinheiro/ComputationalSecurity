@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
+using UnB.Security.Domain;
 
-namespace ConsoleApp
+namespace UnB.Security.Services
 {
     public static class Checker
     {

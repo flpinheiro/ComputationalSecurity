@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Numerics;
+using UnB.Security.Domain;
 
-namespace ConsoleApp
+namespace UnB.Security.Services
 {
     public static class Generator
     {
@@ -15,7 +16,7 @@ namespace ConsoleApp
         private static BigInteger GenerateRandomBigInteger(int size)
         {
             byte[] bytes = new byte[size];
-            (new Random()).NextBytes(bytes);
+            new Random().NextBytes(bytes);
             bytes[bytes.Length - 1] &= 0x7F; // force sign bit to positive
             return BigInteger.Abs(new BigInteger(bytes)); //force positive
         }
@@ -33,7 +34,7 @@ namespace ConsoleApp
             new Random().NextBytes(bytes);
             bytes[bytes.Length - 1] &= 0x7F; // force sign bit to positive
             BigInteger value = new BigInteger(bytes);
-            BigInteger result = (value % (max - min + 1)) + min;
+            BigInteger result = value % (max - min + 1) + min;
             return result;
         }
 
@@ -59,7 +60,7 @@ namespace ConsoleApp
             for (k = 0, q = nm1; q.IsEven; k++, q >>= 1) ;
 
             int is_prime = 1;
-            for (int r = 0; (r < reps) && (is_prime > 0); r++)
+            for (int r = 0; r < reps && is_prime > 0; r++)
             {
                 x = GenerateRandomBigInteger(1, nm1);
                 is_prime = MillerRabinInner(n, x, q, k);
@@ -98,7 +99,7 @@ namespace ConsoleApp
         private static bool IsPrime(this BigInteger n, int reps)
         {
 
-            switch (IsPrimeInner(n, reps))
+            switch (n.IsPrimeInner(reps))
             {
                 case 0: /// number is not prime.
                     return false;
@@ -130,7 +131,7 @@ namespace ConsoleApp
             if (n < 0)
                 throw new ArgumentException("please input a positive integer!");
             if (n < 1000000UL)
-                return IsPrimeUInt64((UInt64)n) ? 2 : 0;
+                return IsPrimeUInt64((ulong)n) ? 2 : 0;
 
             /// If number is now even, it is not a prime. 
             if ((n & 1) == 0)
@@ -158,9 +159,9 @@ namespace ConsoleApp
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        private static bool IsPrimeUInt64(UInt64 n)
+        private static bool IsPrimeUInt64(ulong n)
         {
-            UInt64 q, r, d;
+            ulong q, r, d;
 
             /// filter negative, even and 0,1,2
             if (n < 3 || (n & 1) == 0)
