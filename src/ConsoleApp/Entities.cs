@@ -6,5 +6,7 @@ namespace ConsoleApp
 
     public record PublicKey(BigInteger N, BigInteger E);
 
-    public record RSA(PrivateKey Pk, PublicKey Sk, BigInteger P, BigInteger Q);
+    public record RSA(PrivateKey PrivateKey, PublicKey PublicKey);
+
+    public record RSAMessage(string Message, BigInteger Sigma);
 }
