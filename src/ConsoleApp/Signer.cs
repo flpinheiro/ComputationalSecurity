@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System.Text;
@@ -11,33 +13,27 @@ namespace ConsoleApp
 {
     public static class Signer
     {
-        public static string Sign(PrivateKey privateKey, string message)
+        public static RSAMessage Sign(PrivateKey privateKey, string message)
         {
             var hash = GetHash(message);
-
-            return string.Empty;
+            var sigma = BigInteger.ModPow(new BigInteger(hash), privateKey.D, privateKey.N);
+            var ret = new RSAMessage(message, sigma);
+            return ret;
         }
 
         public static StreamWriter Sign(PrivateKey privateKey, StreamReader sr) 
         {
-            var hash = GetHash(sr);
-            return new StreamWriter(Directory.GetCurrentDirectory()); ;
+            var ret = Sign(privateKey,sr.ReadToEnd());
+            var stream = new StreamWriter(Directory.GetCurrentDirectory());
+            stream.Write(ret.Message);
+            return stream;
         }
 
-        private static byte[] GetHash(string message)
+        public static byte[] GetHash(string message)
         {
             var messageBytes = new UTF8Encoding().GetBytes(message);
             var hashValue = SHA256.Create().ComputeHash(messageBytes);
             return hashValue;
         }
-
-        private static byte[] GetHash(StreamReader sr)
-        {
-            var messageBytes = new UTF8Encoding().GetBytes(sr.ReadToEnd());
-            var hashValue = SHA256.Create().ComputeHash(messageBytes);
-            return hashValue;
-        }
-
-
     }
 }

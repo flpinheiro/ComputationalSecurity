@@ -16,7 +16,7 @@ namespace ConsoleApp
         ///  _size = 1024 => 8192  bits;
         /// }
         /// </summary>
-        private const int _size = 4;
+        private const int _size = 1024;
 
         /// <summary>
         /// Returna um número inteiro positivo impar. 
@@ -182,7 +182,7 @@ namespace ConsoleApp
         /// </summary>
         /// <param name="size"></param>
         /// <returns>Retorna um número primo para ser usado como chave de criptográfia</returns>
-        private static BigInteger GetKey(int size = _size)
+        private static BigInteger GetKey(int size)
         {
             BigInteger key;
             do
@@ -234,10 +234,10 @@ namespace ConsoleApp
         /// Return RSA paramenters
         /// </summary>
         /// <returns></returns>
-        public static RSA GenRSA()
+        public static RSA GenRSA(int size = _size)
         {
-            var p = GetKey();
-            var q = GetKey();
+            var p = GetKey(size);
+            var q = GetKey(size);
 
             var n = p * q;
             var phi = (p - 1) * (q - 1);
