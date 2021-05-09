@@ -1,6 +1,8 @@
-﻿using System.Numerics;
+﻿using System.IO;
+using System.Numerics;
+using UnB.Security.Domain;
 
-namespace ConsoleApp
+namespace UnB.Security.Services
 {
     public static class Checker
     {
@@ -14,8 +16,16 @@ namespace ConsoleApp
             var hashCheckInt = new BigInteger(hashCheck);
 
             return hashInt.Equals(hashCheckInt);
+        }
 
+        public static bool VrfyFile(PublicKey publicKey, StreamReader sr)
+        {
+            var str = sr.ReadToEnd();
 
+            var split = str.Split("@%@");
+
+            RSAMessage message = new RSAMessage(split[1], BigInteger.Parse(split[0]));
+            return Vrfy(publicKey, message);
         }
     }
 }

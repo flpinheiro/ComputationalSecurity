@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace ConsoleApp
+namespace UnB.Security.Domain
 {
     public record PrivateKey(BigInteger N, BigInteger D);
 
