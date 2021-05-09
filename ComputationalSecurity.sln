@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "src\ConsoleAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnB.Security", "src\UnB.Security\UnB.Security.csproj", "{B18DF435-7540-49EF-A157-8CC369BDE0B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnB.Security.WebApi", "src\UnB.Security.WebApi\UnB.Security.WebApi.csproj", "{7FFCD177-AD00-4891-AAC1-0E51DA5AE516}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{B18DF435-7540-49EF-A157-8CC369BDE0B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B18DF435-7540-49EF-A157-8CC369BDE0B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B18DF435-7540-49EF-A157-8CC369BDE0B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FFCD177-AD00-4891-AAC1-0E51DA5AE516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FFCD177-AD00-4891-AAC1-0E51DA5AE516}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FFCD177-AD00-4891-AAC1-0E51DA5AE516}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FFCD177-AD00-4891-AAC1-0E51DA5AE516}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C9976115-61A9-49C2-A0EC-ABC7E172E0B0} = {231092BA-EC22-45A8-9FF4-849FA472E4AB}
 		{B18DF435-7540-49EF-A157-8CC369BDE0B3} = {231092BA-EC22-45A8-9FF4-849FA472E4AB}
+		{7FFCD177-AD00-4891-AAC1-0E51DA5AE516} = {231092BA-EC22-45A8-9FF4-849FA472E4AB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4A9B9B29-E184-4203-9147-2FE464E956DB}
