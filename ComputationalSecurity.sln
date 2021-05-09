@@ -15,6 +15,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnB.Security.WebApi", "src\
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{060F5989-8B75-47A8-9EB6-2F7FB40EAA69}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{02098757-3B85-4046-9E23-34D9D6B5BD28}"
+	ProjectSection(SolutionItems) = preProject
+		k8s\deployment.yml = k8s\deployment.yml
+		k8s\service.yml = k8s\service.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnB.Security.Test", "test\UnB.Security.Test\UnB.Security.Test.csproj", "{A97CB400-717E-4557-BFC3-D8268FFC4FBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +45,10 @@ Global
 		{060F5989-8B75-47A8-9EB6-2F7FB40EAA69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{060F5989-8B75-47A8-9EB6-2F7FB40EAA69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{060F5989-8B75-47A8-9EB6-2F7FB40EAA69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A97CB400-717E-4557-BFC3-D8268FFC4FBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A97CB400-717E-4557-BFC3-D8268FFC4FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A97CB400-717E-4557-BFC3-D8268FFC4FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A97CB400-717E-4557-BFC3-D8268FFC4FBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,6 +57,7 @@ Global
 		{C9976115-61A9-49C2-A0EC-ABC7E172E0B0} = {231092BA-EC22-45A8-9FF4-849FA472E4AB}
 		{B18DF435-7540-49EF-A157-8CC369BDE0B3} = {231092BA-EC22-45A8-9FF4-849FA472E4AB}
 		{7FFCD177-AD00-4891-AAC1-0E51DA5AE516} = {231092BA-EC22-45A8-9FF4-849FA472E4AB}
+		{A97CB400-717E-4557-BFC3-D8268FFC4FBF} = {F3B4692B-9B25-4F95-ADE0-8A00A26D8E19}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4A9B9B29-E184-4203-9147-2FE464E956DB}

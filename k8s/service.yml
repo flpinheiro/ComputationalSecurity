@@ -3,9 +3,10 @@ kind: Service
 metadata:
   name: unb-security
 spec:
-  selector:
+  selector: 
     app: unb-security
   ports:
   - port: 80
-    targetPort: 30000
+    targetPort: 80
+    protocol: TCP
   type: NodePort
