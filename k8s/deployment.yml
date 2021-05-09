@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unb-security
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: unb-security
+  template:
+    metadata:
+      labels:
+        app: unb-security
+    spec:
+      containers:
+      - name: unb-security
+        image: flpinheiro/unb.security
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80

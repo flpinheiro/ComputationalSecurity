@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  unb.security.webapi:
+    image: flpinheiro/unb.security
+    build:
+      context: .
+      dockerfile: src/UnB.Security.WebApi/Dockerfile

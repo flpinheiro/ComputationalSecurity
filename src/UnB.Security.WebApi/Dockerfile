@@ -3,11 +3,12 @@
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 80
-EXPOSE 443
+#EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["src/UnB.Security.WebApi/UnB.Security.WebApi.csproj", "src/UnB.Security.WebApi/"]
+COPY ["src/UnB.Security/UnB.Security.csproj", "src/UnB.Security/"]
 RUN dotnet restore "src/UnB.Security.WebApi/UnB.Security.WebApi.csproj"
 COPY . .
 WORKDIR "/src/src/UnB.Security.WebApi"
